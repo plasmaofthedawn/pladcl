@@ -27,13 +27,6 @@ def setstate_generator(params, globals):
 
     return f"{globals['stateid'][params[0]]}ss"
 
-def streq_generator(params, globals):
-    ret = ""
-
-
-def int_to_dc_int(num: int) -> str:
-    return str(num) if num > 0 else "_" + str(-num)
-
 def global_functions():
 
     return {
@@ -45,9 +38,9 @@ def global_functions():
         "debug_print": GlobalFunc([StringLiteral], 
                             lambda params, globals: ("[" + params[0] + "]n10an") if globals["debug"] else ""),
         "adjust_index": GlobalFunc([IntegerLiteral],
-                                    lambda params, globals: f"li{int_to_dc_int(params[0])}+dsi;Isn"),
+                                    lambda params, globals: f"li{params[0].compile(globals)}+dsi;Isn"),
         "set_index": GlobalFunc([IntegerLiteral],
-                                lambda params, globals: f"{int_to_dc_int(params[0])}dsi;Isn"),
+                                lambda params, globals: f"{params[0].compile(globals)}dsi;Isn"),
         "rewind": GlobalFunc([], lambda params, globals: f"_1si")
 
     }

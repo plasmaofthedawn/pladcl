@@ -89,6 +89,33 @@ class PladclListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PladclParser#expression.
+    def enterExpression(self, ctx:PladclParser.ExpressionContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#expression.
+    def exitExpression(self, ctx:PladclParser.ExpressionContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#predicate.
+    def enterPredicate(self, ctx:PladclParser.PredicateContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#predicate.
+    def exitPredicate(self, ctx:PladclParser.PredicateContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#if_line.
+    def enterIf_line(self, ctx:PladclParser.If_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#if_line.
+    def exitIf_line(self, ctx:PladclParser.If_lineContext):
+        pass
+
+
     # Enter a parse tree produced by PladclParser#program.
     def enterProgram(self, ctx:PladclParser.ProgramContext):
         pass

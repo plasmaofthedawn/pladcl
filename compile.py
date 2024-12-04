@@ -7,6 +7,7 @@ import argparse
 
 from classes import *
 from util import get_name, get_children, unwrap_singleton
+from basetypes import unwrap_line
 
 filename = "input.pdl"
 
@@ -45,13 +46,8 @@ def parse_program(program, **kwargs):
 
             elif get_name(t) == "line":
 
-                l = unwrap_singleton(t)
-
-                if get_name(l) == "empty_line":
-                    continue
-
                 block.add_line(
-                    line_types[get_name(l)](l)
+                    unwrap_line(t)
                 )
         
         program.add_block(block)

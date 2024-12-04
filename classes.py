@@ -34,12 +34,23 @@ class Program:
 
 
         if block.type == "state":
+            if block.name in [x.name for x in self.states]:
+                raise CompileError(f"duplicate state {block.name}")
+            
             self.states.append(block)
+
         elif block.type == "function":
+            if block.name in [x.name for x in self.functions]:
+                raise CompileError(f"duplicate function {block.name}")
+
             self.functions.append(block)
+
         elif block.type == "interrupt":
             if block.name not in self.VALID_INTERRUPTS:
                 raise CompileError(f"{block.name} is not a valid interrupt")
+
+            if block.name in self.interrupts:
+                raise CompileError(f"duplicate interrupt {block.name}")
 
             self.interrupts[block.name] = block
 

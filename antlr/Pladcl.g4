@@ -1,6 +1,6 @@
 grammar Pladcl;
 
-parameter : DC_LITERAL | STRING_LITERAL | INTEGER_LITERAL | IDENTIFIER;
+parameter : DC_LITERAL | STRING_LITERAL | INTEGER_LITERAL | IDENTIFIER | predicate;
 parameter_list : (parameter WHITESPACE? ',' WHITESPACE?)* parameter ;
 function: IDENTIFIER WHITESPACE? '(' WHITESPACE? parameter_list? WHITESPACE? ')';
 

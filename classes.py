@@ -34,6 +34,7 @@ class Block:
 class Program:
 
     VALID_INTERRUPTS = ["program_start", "loop", "newline", "program_end"]
+    VALID_STATELESS_INTERRUPTS = ["program_start", "loop", "newline", "program_end"]
 
     def __init__(self):
         self.states = []
@@ -65,10 +66,51 @@ class Program:
             self.interrupts[block.name] = block
 
     def compile(self, debug=False, progress=None):
-
-
         if len(self.states) == 0:
-            raise CompileError("program must have at least one state")
+            if progress:
+                raise CompileError("progress option is not supported on stateless programs")
+            return self.compile_without_states(debug=debug)
+        else:
+            return self.compile_with_states(debug=debug, progress=progress)
+
+
+
+    def compile_without_states(self, debug=False):
+
+        user_func_to_ind = {
+            block.name: count for count, block in enumerate(self.functions)
+        }
+
+        globals = {
+            "localfuncid": user_func_to_ind,
+            "globalfunc": global_functions(),
+            "debug": debug,
+        }
+
+        # needed macros
+        output = "[q]sq"
+
+        for count, func in enumerate(self.functions):
+            output += f"[{func.compile(globals)}]{count}:F"
+
+        if debug:
+            output += "[Loaded functions]n10an"
+
+        if "program_start" in self.interrupts:
+            output += self.interrupts["program_start"].compile(globals)
+
+        if "program_end" in self.interrupts:
+            output += self.interrupts["program_end"].compile(globals)
+
+        return output
+
+
+
+
+
+    def compile_with_states(self, debug=False, progress=None):
+
+        
 
         states_to_ind = {
             block.name: count for count, block in enumerate(self.states)

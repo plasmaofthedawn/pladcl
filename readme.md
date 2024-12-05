@@ -33,14 +33,16 @@ the entire code is stuck into three types of blocks, `state`, `function`, and `i
 
 ### states
 
-states are the main entry point. the program takes in a file (turned into a stream of numbers) and for every character will call whatever state it's in (it always starts at the first state).
+states are usually the main entry point. the program takes in a file (turned into a stream of numbers) and for every character will call whatever state it's in (it always starts at the first state).
 states can be swapped between using the global function `set_state`
+
+if there are no states in a file, the program will be considered stateless
+this means that no extra code will be generated asied from the `program_start` and `program_end` interrupts
 
 ### functions
 
 function blocks are blocks of code that can be called from anywhere.
-i could have inlined this but meh.
-no user functions cannot have parameters
+no user functions cannot have parameters (use the stack for that).
 
 ### interrupts
 
@@ -52,7 +54,8 @@ as of right now there are 4:
 - `program_end` is run on program end, after the loop is finished
 
 ### lines
-all lines of code are either function calls or dc literals.
+
+you can use dc literals as code or any of the supported features (`if`, numbers, `while`, `return`, `break`, function calls).
 dc literals are marked with backticks on either end of them, and are just inserted as is.
 
 ### global functions

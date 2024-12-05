@@ -1,0 +1,48 @@
+interrupt program_start
+
+    # primes_wanted = 100
+    `100sw`
+    # primes_found = 0
+    `0sf`
+
+    # current_prime = 2
+    `2sa` 
+    # while primes_found < primes wanted
+    while `lf` < `lw` do
+
+        # b = current_prime
+        `lasb`
+        # is_prime = true
+        `1sc`
+
+        # while b > 2 
+        while `lb` > 2 do
+           
+            # b = b -1
+            `lb1-sb`
+
+            # if a % b == 0
+            if `lalb%` == 0 then
+                # is prime = false
+                `0sc`
+                break
+            end
+
+        end
+    
+        # if is prime
+        if `lc` == 1 then
+            # primes_found += 1
+            `lf1+sf`
+            # print prime
+            `lan[ ]n`
+        end
+
+        # current_prime += 1
+        `la1+sa`
+
+    end
+end
+
+
+

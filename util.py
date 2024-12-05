@@ -14,4 +14,10 @@ get_children = lambda x: filter(ignore_pred, x.getChildren())
 
 unwrap_singleton = lambda x: list(get_children(x))[0]
 
-get_line = lambda x: unwrap_singleton(x).getSymbol().line
+def get_line(x):
+
+    while "getSymbol" not in dir(x):
+        x = unwrap_singleton(x)
+
+    return x.getSymbol().line
+

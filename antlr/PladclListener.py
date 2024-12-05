@@ -116,6 +116,15 @@ class PladclListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PladclParser#return_line.
+    def enterReturn_line(self, ctx:PladclParser.Return_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#return_line.
+    def exitReturn_line(self, ctx:PladclParser.Return_lineContext):
+        pass
+
+
     # Enter a parse tree produced by PladclParser#program.
     def enterProgram(self, ctx:PladclParser.ProgramContext):
         pass

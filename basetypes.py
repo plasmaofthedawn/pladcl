@@ -95,6 +95,31 @@ class FunctionCall(Line, Expression):
 
         raise CompileError(f"Unknown function {self.name} on line {get_line(self.node)}")
 
+class Return:
+    def __init__(self, tree):
+        self.tree = tree
+        self.retvalue = None
+
+        for i in get_children(tree):
+            if get_name(i) == "expression":
+                self.retvalue = unwrap_expression(i)
+
+
+    def compile(self, globals):
+        if not globals["can_return"]:
+            raise CompileError(f"cannot return on line {get_line(self.tree)}")
+
+        
+        if globals["depth"] == 1:
+            out = f"lqx"
+        else:
+            out = f"{globals["depth"]}Q"
+
+
+        if self.retvalue:
+            return join_compilables([self.retvalue, out], globals)
+        else:
+            return out
 
 class Predicate:
 
@@ -136,14 +161,8 @@ class Predicate:
         if self.comparison not in self.COMPARISON_INVERSE_MAP:
             raise CompileError(f"Unknown comparison {self.comparison}. This should have been caught by antlr what")
 
-        compiled_1 = self.arg_1.compile(globals)
-        compiled_2 = self.arg_2.compile(globals)
 
-        # put a guard if needed
-        if compiled_1.isdigit() and compiled_2[0].isdigit():
-            compiled_1 += " "
-
-        return f"{compiled_1}{compiled_2}{self.COMPARISON_INVERSE_MAP[self.comparison]}q"
+        return f"{join_compilables((self.arg_1, self.arg_2), globals)}{self.COMPARISON_INVERSE_MAP[self.comparison]}q"
 
 class If(Line):
     
@@ -161,14 +180,17 @@ class If(Line):
 
     def compile(self, globals):
 
-        return f"[{self.predicate.compile(globals)}{"".join(x.compile(globals) for x in self.lines)}]x"
+        globals = globals.copy()
+        globals["depth"] += 1
+
+        return f"[{self.predicate.compile(globals)}{join_compilables(self.lines, globals)}]x"
                 
 
 class EmptyLine(Line):
 
     def __init__(self, Tree):
         pass
-
+        
     def compile(self, globals):
         return ""
 
@@ -179,6 +201,8 @@ line_types = {
     "function": FunctionCall,
     "if_line": If,
     "empty_line": EmptyLine,
+    "return_line": Return,
+    "INTEGER_LITERAL": IntegerLiteral
 }
 
 expression_types = {
@@ -205,4 +229,39 @@ def unwrap_expression(tree):
 def unwrap_literal(tree):
     lit = unwrap_singleton(tree)
     return literal_types[get_name(lit)](lit)
+
+# all this for like. 1 space
+def needs_escaped(command):
+
+    # if it is a digit this could be bad
+    if command.isdigit():
+        return True
+
+    # if the last thing is a digit and it's not being used as a register yikes
+    if len(command) > 1 and command[-1].isdigit() and command[-2] not in "slSL><=;:":
+        return True
+
+    return False
+
+def join_compilables(commands, globals):
+
+    if len(commands) == 0:
+        return ""
+
+    out = ""
+    c1 = commands[0] if type(commands[0]) is str else commands[0].compile(globals) 
+    for command, next_command in zip(commands, commands[1:]):
+
+        #c1 = command.compile(globals)
+        c2 = next_command if isinstance(next_command, str) else next_command.compile(globals)
+
+        if needs_escaped(c1) and c2[0].isdigit():
+            c1 += " "
+
+        out += c1
+
+        c1 = c2
+
+    out += c1
+    return out
 

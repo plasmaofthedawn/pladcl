@@ -10,7 +10,7 @@ if !exists("main_syntax")
 endif
 
 " Keywords
-syn keyword pladclBasicKeywords state interrupt function end if then skipwhite
+syn keyword pladclBasicKeywords state interrupt function end if then return skipwhite
 
 syn match pladclLeftParen "("
 syn match pladclBacktick "`"
@@ -19,7 +19,7 @@ syn match pladclFunction "\w\+\s*(" contains=pladclLeftParen
 
 syn match pladclComment '#.*$'
 
-syn match pladclNumber '\d\+'
+syn match pladclNumber '-\=\d\+'
 syn match pladclIdentifier '([a-z][A-Z]\d)\+'
 syn match pladclString '"[^"]*"'
 syn match pladclDcliteral '`[^`]*`' contains=pladclBacktick

@@ -5,7 +5,7 @@ parameter_list : (parameter WHITESPACE? ',' WHITESPACE?)* parameter ;
 function: IDENTIFIER WHITESPACE? '(' WHITESPACE? parameter_list? WHITESPACE? ')';
 
 empty_line: WHITESPACE? NEWLINE;
-line: WHITESPACE? (DC_LITERAL | function) WHITESPACE? NEWLINE
+line: WHITESPACE? (DC_LITERAL | function | INTEGER_LITERAL | return_line) WHITESPACE? NEWLINE
     | empty_line | WHITESPACE? if_line;
 
 end: WHITESPACE? END WHITESPACE? NEWLINE;
@@ -20,6 +20,7 @@ expression : DC_LITERAL | function | INTEGER_LITERAL;
 
 predicate : WHITESPACE? expression WHITESPACE? COMPARISONS WHITESPACE? expression WHITESPACE? ;
 if_line : IF WHITESPACE? '(' WHITESPACE? predicate WHITESPACE? ')' WHITESPACE? THEN NEWLINE line* end ;
+return_line : RETURN WHITESPACE? expression? ;
 
 program: (empty_line | state_declaration | function_declaration | interrupt_declaration)+;
 
@@ -39,6 +40,7 @@ STATE: 'state';
 INTERRUPT: 'interrupt';
 IF: 'if';
 THEN: 'then';
+RETURN: 'return';
 
 COMMENT: '#'~[\r\n]* ->skip;
 

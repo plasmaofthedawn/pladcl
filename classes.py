@@ -15,11 +15,19 @@ class Block:
         return self.type + " " + self.name + "\n--" + "\n--".join(str(x) for x in self.lines)
 
     def compile(self, globals):
+
+        if self.type == "function":
+            globals["can_return"] = True
+            globals["depth"] = 1
+        elif self.type == "state":
+            globals["can_return"] = True
+            globals["depth"] = 1
+        elif self.type == "interrupt":
+            globals["can_return"] = False
+            globals["depth"] = 0
+
         
-        return "".join(
-                x.compile(globals) for x in self.lines
-        )
-        
+        return join_compilables(self.lines, globals)
 
 class Program:
 
@@ -72,7 +80,7 @@ class Program:
             "localfuncid": user_func_to_ind,
             "stateid": states_to_ind,
             "globalfunc": global_functions(),
-            "debug": debug
+            "debug": debug,
         }
 
         # needed macros

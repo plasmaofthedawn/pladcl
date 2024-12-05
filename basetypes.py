@@ -5,7 +5,7 @@ class CompileError(Exception):
 
 class Line:
 
-    def __init__(self, Tree):
+    def __init__(self, tree):
         raise NotImplementedError
 
     def compile(self, globals):
@@ -42,7 +42,7 @@ class IntegerLiteral(Parameter):
         return str(self.value)
 
     def compile(self, _):
-        return str(self.value) if self.value > 0 else "_" + str(-self.value)
+        return str(self.value) if self.value >= 0 else "_" + str(-self.value)
 
 class StringLiteral(Parameter):
     def __init__(self, tree):
@@ -95,6 +95,32 @@ class FunctionCall(Line, Expression):
 
         raise CompileError(f"Unknown function {self.name} on line {get_line(self.node)}")
 
+
+def gen_quit_command(length: int):
+    # bug in dc makes depth of 1 not work for some reason
+    if length == 1:
+        return f"lqx"
+    elif length == 2:
+        return f"q"
+    else:
+        return f"{length}Q"
+
+class Break:
+    def __init__(self, tree):
+        self.tree = tree
+
+    def compile(self, globals):
+
+        if globals["loop_depth"] < 1:
+            raise CompileError(f"break outside of loop on line {get_line(self.tree)}")
+
+        # fix loop stack
+        out = "LLst"
+        out += gen_quit_command(globals["depth"] - globals["cur_loop_depth"] + 1)
+
+        return out
+
+
 class Return:
     def __init__(self, tree):
         self.tree = tree
@@ -109,13 +135,15 @@ class Return:
         if not globals["can_return"]:
             raise CompileError(f"cannot return on line {get_line(self.tree)}")
 
+
+        if globals["depth"] <= 0:
+            raise CompileError(f"return at depth {globals["depth"]} on line {get_line(self.tree)}. this is an issue with the compiler")
         
-        if globals["depth"] == 1:
-            out = f"lqx"
-        else:
-            out = f"{globals["depth"]}Q"
+        # fix loop stack
+        out = "LLst" * globals["loop_depth"]
+        out += gen_quit_command(globals["loop_depth"])
 
-
+                
         if self.retvalue:
             return join_compilables([self.retvalue, out], globals)
         else:
@@ -162,7 +190,7 @@ class Predicate:
             raise CompileError(f"Unknown comparison {self.comparison}. This should have been caught by antlr what")
 
 
-        return f"{join_compilables((self.arg_1, self.arg_2), globals)}{self.COMPARISON_INVERSE_MAP[self.comparison]}q"
+        return f"{join_compilables((self.arg_2, self.arg_1), globals)}{self.COMPARISON_INVERSE_MAP[self.comparison]}q"
 
 class If(Line):
     
@@ -184,11 +212,34 @@ class If(Line):
         globals["depth"] += 1
 
         return f"[{self.predicate.compile(globals)}{join_compilables(self.lines, globals)}]x"
-                
+
+class While(Line):
+
+    def __init__(self, tree):
+        self.predicate = None
+        self.lines = []
+
+        for i in get_children(tree):
+
+            if get_name(i) == "predicate":
+                self.predicate = Predicate(i)
+
+            if get_name(i) == "line":
+                self.lines.append(unwrap_line(i))
+
+    def compile(self, globals):
+        globals = globals.copy()
+        globals["depth"] += 1
+        globals["loop_depth"] += 1
+        globals["cur_loop_depth"] = globals["depth"]
+
+        return f"[{self.predicate.compile(globals)}SL{join_compilables(self.lines, globals)}LLdx]dx"
+
+        
 
 class EmptyLine(Line):
 
-    def __init__(self, Tree):
+    def __init__(self, tree):
         pass
         
     def compile(self, globals):
@@ -202,7 +253,9 @@ line_types = {
     "if_line": If,
     "empty_line": EmptyLine,
     "return_line": Return,
-    "INTEGER_LITERAL": IntegerLiteral
+    "INTEGER_LITERAL": IntegerLiteral,
+    "while_line": While,
+    "BREAK": Break,
 }
 
 expression_types = {

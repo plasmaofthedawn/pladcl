@@ -116,6 +116,15 @@ class PladclListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PladclParser#while_line.
+    def enterWhile_line(self, ctx:PladclParser.While_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#while_line.
+    def exitWhile_line(self, ctx:PladclParser.While_lineContext):
+        pass
+
+
     # Enter a parse tree produced by PladclParser#return_line.
     def enterReturn_line(self, ctx:PladclParser.Return_lineContext):
         pass

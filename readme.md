@@ -7,6 +7,26 @@ this was written purely for advent of code lol
 
 `pladcl.vim` is a vim syntax highlighting file i wrote for vim
 
+
+## notes on writing !!
+
+some registers are reserved for use by the pladcl compiler. these registers are:
+
+- `i`: current input index
+- `I`: current input stack
+- `n`: current input value
+- `s`: current state
+- `l`: main loop macro
+- `S`: array of state functions
+
+- `L`: loop stack (for use by while loops)
+- `F`: array of function functions
+- `q`: quit macro
+
+- `t`: trash variable (for disposing of unwanted junk by storing it in here)
+
+a lot of these things can be modified but only if u know what ur doing lol.
+
 ## syntax
 
 the entire code is stuck into three types of blocks, `state`, `function`, and `interrupt`.
@@ -19,12 +39,12 @@ states can be swapped between using the global function `set_state`
 ### functions
 
 function blocks are blocks of code that can be called from anywhere.
-i could have inlined this but meh
+i could have inlined this but meh.
 no user functions cannot have parameters
 
 ### interrupts
 
-interrupts are blocks of code that are run at certain points in the code
+interrupts are blocks of code that are run at certain points in the code.
 as of right now there are 4:
 - `program_start` is run on program start, after everything is loaded
 - `loop` is run once at the beginning of every loop
@@ -32,13 +52,12 @@ as of right now there are 4:
 - `program_end` is run on program end, after the loop is finished
 
 ### lines
-all lines of code are either function calls or dc literals
+all lines of code are either function calls or dc literals.
 dc literals are marked with backticks on either end of them, and are just inserted as is.
-
 
 ### global functions
 
-i really should have called these macros as that's what they are
+i really should have called these macros as that's what they are.
 as of right now there are a few:
  - `set_state(identifier id)` sets the current state to the state provided
  - `streq(int offset, str)` returns 1 if the chars on the stack + offset match string, else 0

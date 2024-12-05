@@ -16,6 +16,8 @@ class Block:
 
     def compile(self, globals):
 
+        globals["loop_depth"] = 0
+
         if self.type == "function":
             globals["can_return"] = True
             globals["depth"] = 1

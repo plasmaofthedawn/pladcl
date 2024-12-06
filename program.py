@@ -1,37 +1,7 @@
-from basetypes import *
+from compilables import *
 from globalfuncs import *
 
-
-class Block:
-    def __init__(self):
-        self.name = "invalid"
-        self.type = "invalid"
-        self.lines = []
-
-    def add_line(self, line: Line):
-        self.lines.append(line)
-
-    def __str__(self):
-        return self.type + " " + self.name + "\n--" + "\n--".join(str(x) for x in self.lines)
-
-    def compile(self, globals):
-
-        globals["loop_depth"] = 0
-
-        if self.type == "function":
-            globals["can_return"] = True
-            globals["depth"] = 1
-        elif self.type == "state":
-            globals["can_return"] = True
-            globals["depth"] = 1
-        elif self.type == "interrupt":
-            globals["can_return"] = False
-            globals["depth"] = 0
-
-        
-        return join_compilables(self.lines, globals)
-
-class Program:
+class Program(Compilable):
 
     VALID_INTERRUPTS = ["program_start", "loop", "newline", "program_end"]
     VALID_STATELESS_INTERRUPTS = ["program_start", "loop", "newline", "program_end"]
@@ -39,31 +9,22 @@ class Program:
     def __init__(self):
         self.states = []
         self.functions = []
-        self.interrupts = {}
-
-    def add_block(self, block):
+        self.interrupts = []
 
 
-        if block.type == "state":
-            if block.name in [x.name for x in self.states]:
-                raise CompileError(f"duplicate state {block.name}")
-            
-            self.states.append(block)
+    @classmethod
+    def from_tree(cls, tree):
+        program = cls()
+        program.tree = tree
+        parse = cls.parse_tree(tree)
 
-        elif block.type == "function":
-            if block.name in [x.name for x in self.functions]:
-                raise CompileError(f"duplicate function {block.name}")
+        program.states = parse['state_declaration']
+        program.functions = parse['function_declaration']
+        program.interrupts = {
+            block.name: block for block in parse['interrupt_declaration']
+        }
 
-            self.functions.append(block)
-
-        elif block.type == "interrupt":
-            if block.name not in self.VALID_INTERRUPTS:
-                raise CompileError(f"{block.name} is not a valid interrupt")
-
-            if block.name in self.interrupts:
-                raise CompileError(f"duplicate interrupt {block.name}")
-
-            self.interrupts[block.name] = block
+        return program
 
     def compile(self, debug=False, progress=None):
         if len(self.states) == 0:
@@ -196,10 +157,6 @@ class Program:
             output += self.interrupts["program_end"].compile(globals)
 
         return output
-
-
-
-
 
 
 

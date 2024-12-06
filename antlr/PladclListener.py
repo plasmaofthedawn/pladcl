@@ -8,39 +8,21 @@ else:
 # This class defines a complete listener for a parse tree produced by PladclParser.
 class PladclListener(ParseTreeListener):
 
+    # Enter a parse tree produced by PladclParser#end.
+    def enterEnd(self, ctx:PladclParser.EndContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#end.
+    def exitEnd(self, ctx:PladclParser.EndContext):
+        pass
+
+
     # Enter a parse tree produced by PladclParser#parameter.
     def enterParameter(self, ctx:PladclParser.ParameterContext):
         pass
 
     # Exit a parse tree produced by PladclParser#parameter.
     def exitParameter(self, ctx:PladclParser.ParameterContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#parameter_list.
-    def enterParameter_list(self, ctx:PladclParser.Parameter_listContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#parameter_list.
-    def exitParameter_list(self, ctx:PladclParser.Parameter_listContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#function.
-    def enterFunction(self, ctx:PladclParser.FunctionContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#function.
-    def exitFunction(self, ctx:PladclParser.FunctionContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#empty_line.
-    def enterEmpty_line(self, ctx:PladclParser.Empty_lineContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#empty_line.
-    def exitEmpty_line(self, ctx:PladclParser.Empty_lineContext):
         pass
 
 
@@ -53,12 +35,84 @@ class PladclListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by PladclParser#end.
-    def enterEnd(self, ctx:PladclParser.EndContext):
+    # Enter a parse tree produced by PladclParser#expression.
+    def enterExpression(self, ctx:PladclParser.ExpressionContext):
         pass
 
-    # Exit a parse tree produced by PladclParser#end.
-    def exitEnd(self, ctx:PladclParser.EndContext):
+    # Exit a parse tree produced by PladclParser#expression.
+    def exitExpression(self, ctx:PladclParser.ExpressionContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#predicate.
+    def enterPredicate(self, ctx:PladclParser.PredicateContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#predicate.
+    def exitPredicate(self, ctx:PladclParser.PredicateContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#empty_line.
+    def enterEmpty_line(self, ctx:PladclParser.Empty_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#empty_line.
+    def exitEmpty_line(self, ctx:PladclParser.Empty_lineContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#function.
+    def enterFunction(self, ctx:PladclParser.FunctionContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#function.
+    def exitFunction(self, ctx:PladclParser.FunctionContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#return_line.
+    def enterReturn_line(self, ctx:PladclParser.Return_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#return_line.
+    def exitReturn_line(self, ctx:PladclParser.Return_lineContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#if_line.
+    def enterIf_line(self, ctx:PladclParser.If_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#if_line.
+    def exitIf_line(self, ctx:PladclParser.If_lineContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#while_line.
+    def enterWhile_line(self, ctx:PladclParser.While_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#while_line.
+    def exitWhile_line(self, ctx:PladclParser.While_lineContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#for_in_line.
+    def enterFor_in_line(self, ctx:PladclParser.For_in_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#for_in_line.
+    def exitFor_in_line(self, ctx:PladclParser.For_in_lineContext):
+        pass
+
+
+    # Enter a parse tree produced by PladclParser#for_stack_line.
+    def enterFor_stack_line(self, ctx:PladclParser.For_stack_lineContext):
+        pass
+
+    # Exit a parse tree produced by PladclParser#for_stack_line.
+    def exitFor_stack_line(self, ctx:PladclParser.For_stack_lineContext):
         pass
 
 
@@ -86,51 +140,6 @@ class PladclListener(ParseTreeListener):
 
     # Exit a parse tree produced by PladclParser#interrupt_declaration.
     def exitInterrupt_declaration(self, ctx:PladclParser.Interrupt_declarationContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#expression.
-    def enterExpression(self, ctx:PladclParser.ExpressionContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#expression.
-    def exitExpression(self, ctx:PladclParser.ExpressionContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#predicate.
-    def enterPredicate(self, ctx:PladclParser.PredicateContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#predicate.
-    def exitPredicate(self, ctx:PladclParser.PredicateContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#if_line.
-    def enterIf_line(self, ctx:PladclParser.If_lineContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#if_line.
-    def exitIf_line(self, ctx:PladclParser.If_lineContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#while_line.
-    def enterWhile_line(self, ctx:PladclParser.While_lineContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#while_line.
-    def exitWhile_line(self, ctx:PladclParser.While_lineContext):
-        pass
-
-
-    # Enter a parse tree produced by PladclParser#return_line.
-    def enterReturn_line(self, ctx:PladclParser.Return_lineContext):
-        pass
-
-    # Exit a parse tree produced by PladclParser#return_line.
-    def exitReturn_line(self, ctx:PladclParser.Return_lineContext):
         pass
 
 

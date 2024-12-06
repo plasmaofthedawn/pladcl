@@ -4,10 +4,9 @@ from antlr.PladclLexer import PladclLexer
 import sys
 import argparse
 
-
-from classes import *
 from util import get_name, get_children, unwrap_singleton
-from basetypes import unwrap_line
+
+from program import *
 
 filename = "input.pdl"
 
@@ -26,31 +25,19 @@ def parse_program(program, **kwargs):
     if parser._syntaxErrors > 0:
         return
 
-    program = Program()
+    program = Program.from_tree(tree)
     
+    """
     for b in get_children(tree):
 
         if get_name(b) in ["empty_line"]:
             continue
 
         # for each block
-        block = Block()
-
-        for t in get_children(b):
-            
-            if get_name(t) in ["STATE", "FUNCTION", "INTERRUPT"]:
-                block.type = get_name(t).lower()
-
-            elif get_name(t) == "IDENTIFIER":
-                block.name = t.getText()
-
-            elif get_name(t) == "line":
-
-                block.add_line(
-                    unwrap_line(t)
-                )
+        block = Block.from_tree(b)
         
         program.add_block(block)
+    """
 
     try:
         return program.compile(**kwargs)

@@ -118,9 +118,53 @@ class ForIn(Compilable):
                 DcLiteral.from_kwargs(value=f"+s{self.var.value}"),
         ])
 
+        return join_compilables([set_line, loop], globals)
 
-        out = join_compilables([set_line, loop], globals)
-
-        return out
 
 register_class(ForIn, "for_in_line")
+
+
+class ForStack(Compilable):
+
+    var: CharLiteral
+    stack: CharLiteral
+
+    lines: list[Compilable]
+
+    @classmethod
+    def from_tree(cls, tree):
+        c = super().from_tree(tree)
+
+        parse = cls.parse_tree(tree)
+
+        c.var = parse["CHAR_LITERAL"][0]
+        c.stack = parse["CHAR_LITERAL"][1]
+
+        c.lines = parse["line"]
+
+        return c
+
+    def compile(self, globals: dict) -> str:
+        
+        loop = While.from_kwargs(
+            lines = self.lines,
+            predicate = Predicate.from_kwargs(
+                arg_1 = DcLiteral.from_kwargs(value=f"L{self.stack.value}ds{self.var.value}"),
+                arg_2 = IntegerLiteral.from_kwargs(value=-1),
+                comparison = "!="
+            )
+        )
+
+        # to put back on the end of stack thing if we popped it off
+        if_eos = If.from_kwargs(
+            lines = [DcLiteral.from_kwargs(value=f"_1S1")],
+            predicate = Predicate.from_kwargs(
+                arg_1 = DcLiteral.from_kwargs(value="l" + self.var.value),
+                arg_2 = IntegerLiteral.from_kwargs(value=-1),
+                comparison = "=="
+            )
+        )
+
+        return join_compilables([loop, if_eos], globals)
+
+register_class(ForStack, "for_stack_line")

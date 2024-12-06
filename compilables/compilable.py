@@ -14,6 +14,15 @@ class Compilable:
         self.tree = None
 
     @classmethod
+    def from_kwargs(cls, **kwargs):
+        c = cls()
+
+        for k, v in kwargs.items():
+            c.__setattr__(k, v)
+
+        return c
+
+    @classmethod
     def from_tree(cls, tree):
         """Gathers all needed variables from the provided tree"""
         c = cls()
@@ -32,7 +41,7 @@ class Compilable:
             name = get_name(node)
             #print(name)
             
-            if name in Compilable.singleton_names:
+            while get_name(node) in Compilable.singleton_names:
                 node = unwrap_singleton(node)
                 #print("\t", get_name(node))
 

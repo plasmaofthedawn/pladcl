@@ -51,6 +51,9 @@ class StringLiteral(Compilable):
         c.value = tree.getText().strip('"')
         return c
 
+    def compile(self, globals: dict) -> str:
+        return "[" + self.value + "]"
+
     def __str__(self):
         return '"' + self.value + '"'
 
@@ -58,8 +61,8 @@ register_class(StringLiteral, "STRING_LITERAL")
 
 class CharLiteral(Compilable):
 
-    def __init__(self, tree):
-        self.value = tree.getText()[1: -1]
+    def __init__(self):
+        self.value = ""
 
     @classmethod
     def from_tree(cls, tree):
@@ -69,6 +72,9 @@ class CharLiteral(Compilable):
 
     def compile(self, globals):
         return str(ord(self.value))
+
+    def __str__(self):
+        return "'" + self.value + "'"
 
 register_class(CharLiteral, "CHAR_LITERAL")
 

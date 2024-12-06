@@ -9,12 +9,12 @@ parameter : DC_LITERAL | STRING_LITERAL | INTEGER_LITERAL | IDENTIFIER
                 | predicate | CHAR_LITERAL;
 
 /* line: any line of code */
-line: WHITESPACE? (DC_LITERAL | function | INTEGER_LITERAL | return_line | BREAK) WHITESPACE? NEWLINE
+line: WHITESPACE? (expression | return_line | BREAK) WHITESPACE? NEWLINE
       | empty_line 
       | WHITESPACE? (if_line | while_line | for_in_line | for_stack_line);
 
 /* expression: any expression (thing that returns a value) */
-expression : DC_LITERAL | function | INTEGER_LITERAL | CHAR_LITERAL;
+expression : DC_LITERAL | function | INTEGER_LITERAL | CHAR_LITERAL | STRING_LITERAL;
 
 /* predicate: a boolean conditional (0 == 1 ot smth */
 predicate : WHITESPACE? expression WHITESPACE? COMPARISONS WHITESPACE? expression WHITESPACE? ;

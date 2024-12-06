@@ -23,7 +23,7 @@ def parse_program(program, **kwargs):
     tree = parser.program()
 
     if parser._syntaxErrors > 0:
-        return
+        quit(1)
 
     program = Program.from_tree(tree)
     

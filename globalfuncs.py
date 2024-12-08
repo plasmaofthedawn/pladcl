@@ -43,4 +43,10 @@ def global_functions():
         "rewind": GlobalFunc([], lambda params, globals: f"_1si"),
         "return_if": GlobalFunc([Predicate], lambda params, globals: f"{params[0].compile(globals)}q"),
 
+        "array_set": GlobalFunc([CharLiteral, Expression, Expression], 
+                                lambda params, globals: join_compilables([params[2], params[1]], globals) + ":" + params[0].value),
+        "array_get": GlobalFunc([CharLiteral, Expression], 
+                                lambda params, globals: params[1].compile(globals) + ";" + params[0].value),
+
+
     }

@@ -1,8 +1,8 @@
-from .compilable import Compilable, register_class, join_compilables
+from .compilable import Compilable, Line, register_class, join_compilables
 from .expressions import Predicate
 from .literals import IntegerLiteral, DcLiteral, CharLiteral
 
-class If(Compilable):
+class If(Compilable, Line):
     
     predicate: Predicate
     
@@ -30,7 +30,7 @@ class If(Compilable):
 
 register_class(If, "if_line")
 
-class While(Compilable):
+class While(Compilable, Line):
 
     predicate: Predicate
 
@@ -60,7 +60,7 @@ class While(Compilable):
 register_class(While, "while_line")
 
 
-class ForIn(Compilable):
+class ForIn(Compilable, Line):
 
     var: CharLiteral
 
@@ -124,7 +124,7 @@ class ForIn(Compilable):
 register_class(ForIn, "for_in_line")
 
 
-class ForStack(Compilable):
+class ForStack(Compilable, Line):
 
     var: CharLiteral
     stack: CharLiteral

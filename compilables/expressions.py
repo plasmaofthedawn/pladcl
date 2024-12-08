@@ -1,6 +1,6 @@
-from .compilable import Compilable, CompileError, register_class, join_compilables
+from .compilable import Compilable, Expression, CompileError, Parameter, register_class, join_compilables
 
-class Predicate(Compilable):
+class Predicate(Compilable, Expression, Parameter):
 
     COMPARISON_INVERSE_MAP = {
             "==": "!=",
@@ -62,7 +62,7 @@ class Predicate(Compilable):
 register_class(Predicate, "predicate")
 
 
-class FunctionCall(Compilable):
+class FunctionCall(Compilable, Expression, Parameter):
     def __init__(self):
         self.name = "invalid"
         self.parameters = []        

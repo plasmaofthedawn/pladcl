@@ -69,7 +69,6 @@ def register_class(cls, name):
 def register_singleton(name):
     Compilable.singleton_names.add(name)
 
-
 # i'm not sure where to put these yet
 register_singleton("line")
 register_singleton("expression")
@@ -120,3 +119,12 @@ def join_compilables(commands, globals):
     return out
 
 
+# empty for. like. description
+class Line:
+    pass 
+
+class Expression:
+    pass 
+
+class Parameter:
+    pass

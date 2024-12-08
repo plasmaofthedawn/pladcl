@@ -1,6 +1,6 @@
-from .compilable import Compilable, register_class
+from .compilable import Compilable, Expression, Parameter, register_class
 
-class DcLiteral(Compilable):
+class DcLiteral(Compilable, Expression, Parameter):
 
     def __init__(self):
         self.value = ""
@@ -21,7 +21,7 @@ class DcLiteral(Compilable):
 
 register_class(DcLiteral, "DC_LITERAL")
 
-class IntegerLiteral(Compilable):
+class IntegerLiteral(Compilable, Expression, Parameter):
     def __init__(self):
         self.value = 0
 
@@ -41,7 +41,7 @@ class IntegerLiteral(Compilable):
 
 register_class(IntegerLiteral, "INTEGER_LITERAL")
 
-class StringLiteral(Compilable):
+class StringLiteral(Compilable, Parameter):
     def __init__(self):
         self.value = ""
 
@@ -59,7 +59,7 @@ class StringLiteral(Compilable):
 
 register_class(StringLiteral, "STRING_LITERAL")
 
-class CharLiteral(Compilable):
+class CharLiteral(Compilable, Expression, Parameter):
 
     def __init__(self):
         self.value = ""
@@ -79,7 +79,7 @@ class CharLiteral(Compilable):
 register_class(CharLiteral, "CHAR_LITERAL")
 
 
-class Identifier(Compilable):
+class Identifier(Compilable, Parameter):
     def __init__(self):
         self.value = ""
 

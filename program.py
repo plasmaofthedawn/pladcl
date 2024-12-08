@@ -154,7 +154,7 @@ class Program(Compilable):
             output += "10an"
 
         if "program_end" in self.interrupts:
-            output += "st"
+            #output += "st"
             output += self.interrupts["program_end"].compile(globals)
 
         return output

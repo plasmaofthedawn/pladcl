@@ -10,7 +10,7 @@ if !exists("main_syntax")
 endif
 
 " Keywords
-syn keyword pladclBasicKeywords state interrupt function end if then return while do break for in to step stack skipwhite
+syn keyword pladclBasicKeywords state interrupt function end if then return while do break for in to step stack and or not skipwhite
 
 syn match pladclLeftParen "("
 syn match pladclBacktick "`"

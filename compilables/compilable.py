@@ -33,7 +33,7 @@ class Compilable:
         raise NotImplementedError
 
     @staticmethod
-    def parse_tree(tree):
+    def parse_tree(tree, process_types=True):
         out = defaultdict(list)
 
         for node in get_children(tree):
@@ -46,15 +46,13 @@ class Compilable:
                 #print("\t", get_name(node))
 
             # if we have a type for this name
-            if get_name(node) in Compilable.name_to_type:
+            if process_types and get_name(node) in Compilable.name_to_type:
                 cls = Compilable.name_to_type[get_name(node)]
                 value = cls.from_tree(node)
             else:
                 value = node
 
             out[name].append(value)
-
-        #print(out)
 
         return out
 

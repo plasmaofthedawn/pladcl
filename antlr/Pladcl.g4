@@ -1,4 +1,3 @@
-
 grammar Pladcl;
 
 /* end */
@@ -17,7 +16,11 @@ line: WHITESPACE? (expression | return_line | BREAK) WHITESPACE? NEWLINE
 expression : DC_LITERAL | function | INTEGER_LITERAL | CHAR_LITERAL | STRING_LITERAL;
 
 /* predicate: a boolean conditional (0 == 1 ot smth */
-predicate : WHITESPACE? expression WHITESPACE? COMPARISONS WHITESPACE? expression WHITESPACE? ;
+predicate : '(' WHITESPACE? predicate WHITESPACE? ')'
+          | NOT WHITESPACE? predicate
+          | predicate WHITESPACE? AND WHITESPACE? predicate 
+          | predicate WHITESPACE? OR WHITESPACE? predicate
+          | expression WHITESPACE? COMPARISONS WHITESPACE? expression ;
 
 empty_line: WHITESPACE? NEWLINE;
 
@@ -80,11 +83,16 @@ TO: 'to';
 STEP: 'step';
 STACK: 'stack';
 
+AND: 'and';
+OR: 'or';
+NOT: 'not';
+
 /* identifier */
 IDENTIFIER: ([a-z] | [A-Z] | '_')+;
 
 /* comment */
 COMMENT: '#'~[\r\n]* ->skip;
+
 
 
 

@@ -1,5 +1,5 @@
 from .compilable import Compilable, Line, register_class, join_compilables
-from .expressions import Predicate
+from .predicate import PredicateBase, Predicate
 from .literals import IntegerLiteral, DcLiteral, CharLiteral
 
 class If(Compilable, Line):
@@ -99,9 +99,9 @@ class ForIn(Compilable, Line):
         set_line = DcLiteral.from_kwargs(value=self.start.compile(globals) + "s" + self.var.value)
 
         # predicate
-        pred = Predicate.from_kwargs(
-            arg_1 = DcLiteral.from_kwargs(value="l" + self.var.value),
-            arg_2 = self.end,
+        pred = PredicateBase.from_kwargs(
+            param1 = DcLiteral.from_kwargs(value="l" + self.var.value),
+            param2 = self.end,
             comparison = "!=",
         )
 
@@ -148,9 +148,9 @@ class ForStack(Compilable, Line):
         
         loop = While.from_kwargs(
             lines = self.lines,
-            predicate = Predicate.from_kwargs(
-                arg_1 = DcLiteral.from_kwargs(value=f"L{self.stack.value}ds{self.var.value}"),
-                arg_2 = IntegerLiteral.from_kwargs(value=-1),
+            predicate = PredicateBase.from_kwargs(
+                param1 = DcLiteral.from_kwargs(value=f"L{self.stack.value}ds{self.var.value}"),
+                param2 = IntegerLiteral.from_kwargs(value=-1),
                 comparison = "!="
             )
         )
@@ -158,9 +158,9 @@ class ForStack(Compilable, Line):
         # to put back on the end of stack thing if we popped it off
         if_eos = If.from_kwargs(
             lines = [DcLiteral.from_kwargs(value=f"_1S1")],
-            predicate = Predicate.from_kwargs(
-                arg_1 = DcLiteral.from_kwargs(value="l" + self.var.value),
-                arg_2 = IntegerLiteral.from_kwargs(value=-1),
+            predicate = PredicateBase.from_kwargs(
+                param1 = DcLiteral.from_kwargs(value="l" + self.var.value),
+                param2 = IntegerLiteral.from_kwargs(value=-1),
                 comparison = "=="
             )
         )

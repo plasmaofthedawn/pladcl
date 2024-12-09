@@ -48,5 +48,10 @@ def global_functions():
         "array_get": GlobalFunc([CharLiteral, Expression], 
                                 lambda params, globals: params[1].compile(globals) + ";" + params[0].value),
 
+        "inc": GlobalFunc([CharLiteral],
+                          lambda params, globals: f"l{params[0].value}1+s{params[0].value}"),
+        "dec": GlobalFunc([CharLiteral],
+                          lambda params, globals: f"l{params[0].value}1-s{params[0].value}"),
+
 
     }

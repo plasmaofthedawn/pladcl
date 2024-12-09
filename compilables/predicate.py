@@ -3,6 +3,7 @@ from .compilable import Compilable, CompileError, Expression, Parameter, join_co
 from util import unwrap_singleton
 
 COMPARISON_INVERSE_MAP = {
+    "=": "!=",
     "==": "!=",
     "!=": "=",
     ">": "!>",

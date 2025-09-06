@@ -7,6 +7,8 @@ this was written purely for advent of code lol
 
 `pladcl.vim` is a vim syntax highlighting file i wrote for vim
 
+`pladcl.lang` is a `highlight` syntax highlhting file.
+add it to `/usr/share/highlight/langDefs/` and add a line pointing `.pdl` files to it in `/etc/highlight/filetypes.conf`
 
 ## notes on writing !!
 

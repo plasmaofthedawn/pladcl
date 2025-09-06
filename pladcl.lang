@@ -1,0 +1,33 @@
+Description="pladcl"
+Categories = {"source", "script"}
+
+
+Digits=[[ -?[0-9]+ ]]
+
+Keywords = {
+    -- keywords
+    { Id=1,
+      List={"state", "interrupt", "function", "end", "if", "then", "return", "while", "do", "break", "for", "in", "to", "step", "stack", "and", "or", "not", "skipwhite"},
+    },
+    -- functions
+    { Id=2,
+      Regex=[[\w+\s*\)]]
+    },
+    -- dc code
+    { Id=3,
+      Regex=[[ `[^`]*` ]]
+    },
+}
+
+Strings = {
+    Delimiter=[["|']]
+}
+
+Comments = {
+    { Block=false,
+      Delimiter = { [[#]] },
+    },
+}
+
+
+
